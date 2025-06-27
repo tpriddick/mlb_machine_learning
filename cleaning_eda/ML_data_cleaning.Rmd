@@ -1,0 +1,405 @@
+---
+title: "ML EDA Notebook"
+author: "Tyler Riddick"
+date: "2024-03-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+install.packages("readxl")
+library(readxl)
+```
+
+```{r}
+d2023 = read_csv('sportsref_download_2023.csv')
+d2022 = read_csv('sportsref_download_2022.csv')
+d2021 = read_csv('sportsref_download_2021.csv')
+d2019 = read_csv('sportsref_download_2019.csv')
+d2018 = read_csv('sportsref_download_2018.csv')
+d2017 = read_csv('sportsref_download_2017.csv')
+d2016 = read_csv('sportsref_download_2016.csv')
+d2015 = read_csv('sportsref_download_2015.csv')
+d2014 = read_csv('sportsref_download_2014.csv')
+d2013 = read_csv('standings2013.csv')
+d2012 = read_csv('standings2012.csv')
+d2011 = read_csv('standings2011.csv')
+d2010 = read_csv('standings2010.csv')
+d2009 = read_csv('standings2009.csv')
+d2008 = read_csv('standings2008.csv')
+d2007 = read_csv('standings2007.csv')
+d2006 = read_csv('standings2006.csv')
+```
+
+```{r}
+d2023 = d2023 %>%
+  mutate('Year' = 2023,
+         tYear = paste(Tm,Year,sep=''))
+d2022 = d2022 %>%
+  mutate('Year' = 2022,
+         tYear = paste(Tm,Year,sep=''))
+d2021 = d2021 %>%
+  mutate('Year' = 2021,
+         tYear = paste(Tm,Year,sep=''))
+d2019 = d2019 %>%
+  mutate('Year' = 2019,
+         tYear = paste(Tm,Year,sep=''))
+d2018 = d2018 %>%
+  mutate('Year' = 2018,
+         tYear = paste(Tm,Year,sep=''))
+d2017 = d2017 %>%
+  mutate('Year' = 2017,
+         tYear = paste(Tm,Year,sep=''))
+d2016 = d2016 %>%
+  mutate('Year' = 2016,
+         tYear = paste(Tm,Year,sep=''))
+d2015 = d2015 %>%
+  mutate('Year' = 2015,
+         tYear = paste(Tm,Year,sep=''))
+d2014 = d2014 %>%
+  mutate('Year' = 2014,
+         tYear = paste(Tm,Year,sep=''))
+d2013 = d2013 %>%
+  mutate('Year' = 2013,
+         tYear = paste(Tm,Year,sep=''))
+d2012 = d2012 %>%
+  mutate('Year' = 2012,
+         tYear = paste(Tm,Year,sep=''))
+d2011 = d2011 %>%
+  mutate('Year' = 2011,
+         tYear = paste(Tm,Year,sep=''))
+d2010 = d2010 %>%
+  mutate('Year' = 2010,
+         tYear = paste(Tm,Year,sep=''))
+d2009 = d2009 %>%
+  mutate('Year' = 2009,
+         tYear = paste(Tm,Year,sep=''))
+d2008 = d2008 %>%
+  mutate('Year' = 2008,
+         tYear = paste(Tm,Year,sep=''))
+d2007 = d2007 %>%
+  mutate('Year' = 2007,
+         tYear = paste(Tm,Year,sep=''))
+d2006 = d2006 %>%
+  mutate('Year' = 2006,
+         tYear = paste(Tm,Year,sep=''))
+```
+
+```{r}
+dWL = bind_rows(d2023,d2022,d2021,d2019,d2018,d2017,d2016,d2015,d2014,d2013,d2012,d2011,d2010,d2009,d2008,d2007,d2006)
+```
+
+```{r}
+att2023 = read_csv('sportsref_att_2023.csv')
+att2022 = read_csv('sportsref_att_2022.csv')
+att2021 = read_csv('sportsref_att_2021.csv')
+att2019 = read_csv('sportsref_att_2019.csv')
+att2018 = read_csv('sportsref_att_2018.csv')
+att2017 = read_csv('sportsref_att_2017.csv')
+att2016 = read_csv('sportsref_att_2016.csv')
+att2015 = read_csv('sportsref_att_2015.csv')
+att2014 = read_csv('sportsref_att_2014.csv')
+att2013 = read_csv('attendance2013.csv')
+att2012 = read_csv('attendance2012.csv')
+att2011 = read_csv('attendance2011.csv')
+att2010 = read_csv('attendance2010.csv')
+att2009 = read_csv('attendance2009.csv')
+att2008 = read_csv('attendance2008.csv')
+att2007 = read_csv('attendance2007.csv')
+att2006 = read_csv('attendance2006.csv')
+```
+
+```{r}
+att2023 = att2023 %>%
+  mutate('Year' = 2023,
+         tYear = paste(Tm,Year,sep=''))
+att2022 = att2022 %>%
+  mutate('Year' = 2022,
+         tYear = paste(Tm,Year,sep=''))
+att2021 = att2021 %>%
+  mutate('Year' = 2021,
+         tYear = paste(Tm,Year,sep=''))
+att2019 = att2019 %>%
+  mutate('Year' = 2019,
+         tYear = paste(Tm,Year,sep=''))
+att2018 = att2018 %>%
+  mutate('Year' = 2018,
+         tYear = paste(Tm,Year,sep=''))
+att2017 = att2017 %>%
+  mutate('Year' = 2017,
+         tYear = paste(Tm,Year,sep=''))
+att2016 = att2016 %>%
+  mutate('Year' = 2016,
+         tYear = paste(Tm,Year,sep=''))
+att2015 = att2015 %>%
+  mutate('Year' = 2015,
+         tYear = paste(Tm,Year,sep=''))
+att2014 = att2014 %>%
+  mutate('Year' = 2014,
+         tYear = paste(Tm,Year,sep=''))
+att2013 = att2013 %>%
+  mutate('Year' = 2013,
+         tYear = paste(Tm,Year,sep=''))
+att2012 = att2012 %>%
+  mutate('Year' = 2012,
+         tYear = paste(Tm,Year,sep=''))
+att2011 = att2011 %>%
+  mutate('Year' = 2011,
+         tYear = paste(Tm,Year,sep=''))
+att2010 = att2010 %>%
+  mutate('Year' = 2010,
+         tYear = paste(Tm,Year,sep=''))
+att2009 = att2009 %>%
+  mutate('Year' = 2009,
+         tYear = paste(Tm,Year,sep=''))
+att2008 = att2008 %>%
+  mutate('Year' = 2008,
+         tYear = paste(Tm,Year,sep=''))
+att2007 = att2007 %>%
+  mutate('Year' = 2007,
+         tYear = paste(Tm,Year,sep=''))
+att2006 = att2006 %>%
+  mutate('Year' = 2006,
+         tYear = paste(Tm,Year,sep=''))
+```
+
+```{r}
+dAtt = bind_rows(att2023,att2022,att2021,att2019,att2018,att2017,att2016,att2015,att2014,att2013,att2012,att2011,att2010,att2009,att2008,att2007,att2006)
+```
+
+```{r}
+dWLatt = inner_join(dWL,dAtt,by=c("tYear"="tYear"))
+```
+```{r}
+dWLatt = dWLatt %>%
+  rename(WL = 'W-L%')
+head(dWLatt)
+```
+
+```{r}
+write.csv(dWLatt,'mlb_team_stats.csv')
+```
+
+```{r}
+team_hitting_stats = read.csv('team_hitting_stats.csv')
+team_hitting_stats %>%
+  arrange(Season)
+
+unique(team_hitting_stats$Team)
+```
+```{r}
+dsTHS = team_hitting_stats %>%
+  mutate(city = case_when(
+    Team %in% c("ARI") ~ "Phoenix",
+    Team %in% c("ATL") ~ "Atlanta",
+    Team %in% c("BAL") ~ "Baltimore",
+    Team %in% c("BOS") ~ "Boston",
+    Team %in% c("CHC") ~ "Chicago",
+    Team %in% c("CHW") ~ "Chicago",
+    Team %in% c("CIN") ~ "Cincinnati",
+    Team %in% c("CLE") ~ "Cleveland",
+    Team %in% c("COL") ~ "Denver",
+    Team %in% c("DET") ~ "Detroit",
+    Team %in% c("FLA") ~ "Miami",
+    Team %in% c("HOU") ~ "Houston",
+    Team %in% c("KCR") ~ "KansasCity",
+    Team %in% c("LAA") ~ "LosAngeles",
+    Team %in% c("LAD") ~ "LosAngeles",
+    Team %in% c("MIA") ~ "Miami",
+    Team %in% c("MIL") ~ "Milwaukee",
+    Team %in% c("MIN") ~ "Minneapolis",
+    Team %in% c("NYM") ~ "NewYork",
+    Team %in% c("NYY") ~ "NewYork",
+    Team %in% c("OAK") ~ "SanFrancisco",
+    Team %in% c("PHI") ~ "Philadelphia",
+    Team %in% c("PIT") ~ "Pittsburgh",
+    Team %in% c("SDP") ~ "SanDiego",
+    Team %in% c("SFG") ~ "SanFrancisco",
+    Team %in% c("SEA") ~ "Seattle",
+    Team %in% c("STL") ~ "StLouis",
+    Team %in% c("TBD") ~ "Tampa",
+    Team %in% c("TBR") ~ "Tampa",
+    Team %in% c("TEX") ~ "Arlington",
+    Team %in% c("TOR") ~ "Toronto",
+    Team %in% c("WSN") ~ "Washington",
+    TRUE ~ NA_character_
+  ),
+  Key = paste0(city,"",Season)
+)
+unique(dsTHS$city)
+```
+
+```{r}
+tor = read_csv('Toronto-population-2024-04-07.csv')
+tor %>%
+  mutate(city = 'Toronto',
+         year = substr(date,1,4),
+         popKey = paste0(city,year))
+
+popFunction = function(file){
+  data = read.csv(file)
+  filename = basename(file)
+  parts = unlist(strsplit(filename,'-'))
+  cityname = parts[1]
+  data = data %>%
+    mutate(city = cityname,
+           year = substr(date,1,4),
+           Key = paste0(city,year))
+  return(data)
+}
+
+hou = popFunction('Houston-population-2024-04-07.csv')
+hou
+```
+
+```{r}
+tor = popFunction('Toronto-population-2024-04-07.csv')
+atl = popFunction('Atlanta-population-2024-04-07.csv')
+los = popFunction('LosAngeles-population-2024-04-07.csv')
+nyc = popFunction('NewYork-population-2024-04-07.csv')
+bos = popFunction('Boston-population-2024-04-07.csv')
+cin = popFunction('Cincinnati-population-2024-04-07.csv')
+tam = popFunction('Tampa-population-2024-04-07.csv')
+phi = popFunction('Philadelphia-population-2024-04-07.csv')
+chi = popFunction('Chicago-population-2024-04-07.csv')
+arl = popFunction('Arlington-population-2024-04-07.csv')
+stl = popFunction('StLouis-population-2024-04-07.csv')
+sf = popFunction('SanFrancisco-population-2024-04-07.csv')
+min = popFunction('Minneapolis-population-2024-04-07.csv')
+pit = popFunction('Pittsburgh-population-2024-04-07.csv')
+mil = popFunction('Milwaukee-population-2024-04-07.csv')
+det = popFunction('Detroit-population-2024-04-07.csv')
+phx = popFunction('Phoenix-population-2024-04-04.csv')
+wdc = popFunction('Washington-population-2024-04-07.csv')
+clv = popFunction('Cleveland-population-2024-04-07.csv')
+bal = popFunction('Baltimore-population-2024-04-07.csv')
+sdo = popFunction('SanDiego-population-2024-04-07.csv')
+mia = popFunction('Miami-population-2024-04-07.csv')
+sea = popFunction('Seattle-population-2024-04-07.csv')
+dvr = popFunction('Denver-population-2024-04-07.csv')
+kan = popFunction('KansasCity-population-2024-04-07.csv')
+dsPop = rbind(tor,hou,atl,los,nyc,bos,cin,tam,phi,chi,arl,stl,sf,min,pit,mil,det,phx,wdc,clv,bal,sdo,mia,sea,dvr,kan)
+```
+```{r}
+dsPop = dsPop %>%
+  select(Population, Key)
+dsTHS
+
+dsPT = dsTHS %>%
+  left_join(dsPop, by='Key')
+
+view(dsPT)
+
+unique(dWLatt$Tm.x)
+
+dWLatt = dWLatt %>%
+  mutate(city = case_when(
+    Tm.x == "Atlanta Braves" ~ "Atlanta",
+    Tm.x == "Baltimore Orioles" ~ "Baltimore",
+    Tm.x == "Los Angeles Dodgers" ~ "LosAngeles",
+    Tm.x == "Tampa Bay Rays" ~ "Tampa",
+    Tm.x == "Tampa Bay Devil Rays" ~ "Tampa",
+    Tm.x == "Milwaukee Brewers" ~ "Milwaukee",
+    Tm.x == "Houston Astros" ~ "Houston",
+    Tm.x == "Philadelphia Phillies" ~ "Philadelphia",
+    Tm.x == "Texas Rangers" ~ "Arlington",
+    Tm.x == "Toronto Blue Jays" ~ "Toronto",
+    Tm.x == "Seattle Mariners" ~ "Seattle",
+    Tm.x == "Minnesota Twins" ~ "Minneapolis",
+    Tm.x == "Arizona Diamondbacks" ~ "Phoenix",
+    Tm.x == "Miami Marlins" ~ "Miami",
+    Tm.x == "Florida Marlins" ~ "Miami",
+    Tm.x == "Chicago Cubs" ~ "Chicago",
+    Tm.x == "San Diego Padres" ~ "SanDiego",
+    Tm.x == "Cincinnati Reds" ~ "Cincinnati",
+    Tm.x == "New York Yankees" ~ "NewYork",
+    Tm.x == "San Francisco Giants" ~ "SanFrancisco",
+    Tm.x == "Detroit Tigers" ~ "Detroit",
+    Tm.x == "Boston Red Sox" ~ "Boston",
+    Tm.x == "Cleveland Guardians" ~ "Cleveland",
+    Tm.x == "Pittsburgh Pirates" ~ "Pittsburgh",
+    Tm.x == "New York Mets" ~ "NewYork",
+    Tm.x == "Los Angeles Angels" | Tm.x == "Los Angeles Angels of Anaheim" ~ "LosAngeles",
+    Tm.x == "St. Louis Cardinals" ~ "StLouis",
+    Tm.x == "Washington Nationals" ~ "Washington",
+    Tm.x == "Chicago White Sox" ~ "Chicago",
+    Tm.x == "Colorado Rockies" ~ "Denver",
+    Tm.x == "Kansas City Royals" ~ "KansasCity",
+    Tm.x == "Oakland Athletics" ~ "San Francisco",
+    Tm.x == "Cleveland Indians" ~ "Cleveland",
+    TRUE ~ NA_character_
+  ),
+  Key = paste0(city,Year.x))
+
+dStats = left_join(dWLatt,dsPT,by = 'Key')
+dStats
+write.csv(dStats,'mlbstats.csv')
+```
+```{r}
+dsPT = dsPT %>%
+  mutate(teamLong = case_when(
+    Team == "ATL" ~ "Atlanta Braves",
+    Team == "BAL" ~ "Baltimore Orioles",
+    Team == "LAD" ~ "Los Angeles Dodgers",
+    Team == "TBD" ~ "Tampa Bay Devil Rays", 
+    Team == "TBR" ~ "Tampa Bay Rays",
+    Team == "MIL" ~ "Milwaukee Brewers",
+    Team == "HOU" ~ "Houston Astros",
+    Team == "PHI" ~ "Philadelphia Phillies",
+    Team == "TEX" ~ "Texas Rangers",
+    Team == "TOR" ~ "Toronto Blue Jays",
+    Team == "SEA" ~ "Seattle Mariners",
+    Team == "MIN" ~ "Minnesota Twins",
+    Team == "ARI" ~ "Arizona Diamondbacks",
+    Team == "MIA" ~ "Miami Marlins",
+    Team == "FLA" ~ "Florida Marlins",
+    Team == "CHC" ~ "Chicago Cubs",
+    Team == "SDP" ~ "San Diego Padres",
+    Team == "CIN" ~ "Cincinnati Reds",
+    Team == "NYY" ~ "New York Yankees",
+    Team == "SFG" ~ "San Francisco Giants",
+    Team == "DET" ~ "Detroit Tigers",
+    Team == "BOS" ~ "Boston Red Sox",
+    Team == "CLE" & Season >= 2022 ~ "Cleveland Guardians",
+    Team == "PIT" ~ "Pittsburgh Pirates",
+    Team == "NYM" ~ "New York Mets",
+    Team == "LAA" & Season >= 2016 ~ "Los Angeles Angels",
+    Team == "STL" ~ "St. Louis Cardinals",
+    Team == "WSN" ~ "Washington Nationals",
+    Team == "CHW" ~ "Chicago White Sox",
+    Team == "COL" ~ "Colorado Rockies",
+    Team == "KCR" ~ "Kansas City Royals",
+    Team == "OAK" ~ "Oakland Athletics",
+    Team == "CLE" & Season <= 2021 ~ "Cleveland Indians",
+    Team == "LAA" & Season <= 2015 ~ "Los Angeles Angels of Anaheim",
+    TRUE ~ NA_character_
+  ),
+  tYear = paste0(teamLong, Season)
+)
+dStats = left_join(dWLatt,dsPT,by = 'tYear')
+dStats %>%
+  arrange(Key)
+write.csv(dStats,'mlbstats.csv')
+```
+```{r}
+colnames(dStats)
+dStats = subset(dStats,select = -c(Tm.y))
+dStats
+dStats = dStats %>%
+  rename(TeamAbb = Team, 
+         Team = Tm.x,
+         R = R.x,
+         RTotal = R.y)
+write.csv(dStats,'mlbstats.csv')
+colnames(dStats)
+summary(dStats)
+```
+```{r}
+dStats %>%
+  ggplot(aes(W,Attendance)) +
+  geom_jitter()
+```
+
+```{r}
+dStats
+```

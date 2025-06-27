@@ -1,0 +1,224 @@
+---
+title: "EDA ML"
+author: "Tyler Riddick"
+date: "2024-03-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+dWLatt = read_csv('mlb_team_stats.csv')
+slimStats = read_csv('slimStats2.csv')
+
+dWLatt %>%
+  ggplot(aes(x=WL,y=Attendance)) +
+  geom_point(color='cyan4')+
+  labs(
+    title = 'Attendance vs Win-Loss Ratio 2014-2013',
+    x = 'Win-Loss Ratio',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme_bw()
+ggsave('att_v_wl.png')
+```
+
+```{r}
+view(dWLatt)
+dWLatt %>%
+  mutate()
+```
+
+```{r}
+dWLatt %>%
+  ggplot(aes(x=R,y=Attendance))+
+  geom_jitter(color='cyan4')+
+  scale_y_continuous(labels=scales::comma)+
+  labs(
+    title = 'Attendance vs Runs 2014-2023',
+    x = 'Runs',
+  )+
+  theme_bw()
+ggsave('att_v_runs.png')
+```
+
+```{r}
+dWLatt = dWLatt %>%
+  separate(Home,into = c('HomeWins','HomeLosses'),sep='-')
+
+dWLatt %>%
+  ggplot(aes(x=HomeWins,y=Attendance))+
+  geom_jitter(color='cyan4')+
+  scale_y_continuous(labels=scales::comma)+
+  labs(
+    title = 'Attendance vs Home Wins 2014-2023',
+    x = 'Home Wins'
+  )+
+  theme_bw()
+ggsave('att_v_hw.png')
+```
+
+```{r}
+dWLatt %>%
+  filter(Year.x == 2023) %>%
+  ggplot(aes(x=fct_reorder(Tm.x,-Attendance),y=Attendance))+
+  geom_bar(stat='identity',color='black',fill='goldenrod')+
+  scale_y_continuous(labels=scales::comma)+
+  labs(
+    title = 'Season Attendance Per Team in 2023',
+    x = 'Team'
+  )+
+  theme(axis.text.x=element_text(angle = 90, vjust = 0.5, hjust=1))
+  
+```
+```{r}
+view(dWLatt)
+```
+
+```{r}
+slimStats %>%
+  mutate(popLabel = as_factor(popLabel)) %>%
+  #filter(city.x %in% c('NewYork','LosAngeles')) %>%
+  ggplot(aes(x=Population,y=Attendance,color=as_factor(popLabel))) +
+  geom_point()+
+  labs(
+    title = 'Attendance vs Population 2006-2023',
+    x = 'Population',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  #theme(legend = element_blank())+
+  theme_bw()
+```
+```{r}
+slimStats %>%
+  mutate(popLabel = as_factor(popLabel)) %>%
+  mutate(popLabel = case_when(
+    popLabel == 0 ~ 'Medium',
+    popLabel == 1 ~ 'Small',
+    popLabel == 2 ~ 'Large',
+    popLabel == 3 ~ 'Medium-Small',
+    popLabel == 4 ~ 'Medium-Large'
+  )) %>%
+  ggplot(aes(x=W,y=Attendance,color=as_factor(popLabel))) +
+  geom_point(alpha = 0.6)+
+  labs(
+    title = 'Attendance vs Win Count Faceted by Metro Area Population 2006-2023',
+    x = 'Win Count',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme(legend.position = 'none')+
+    theme(plot.title = element_text(size=24),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 13),
+        legend.title = element_text(size = 16),
+        axis.text = element_text(size=13))+
+  #scale_color_viridis_d(option='viridis')+
+  facet_grid(~factor(popLabel,levels=c('Small','Medium-Small','Medium','Medium-Large','Large')))
+ggsave('att_v_w_clustered.png',width=12,height=8,units="in")
+```
+```{r}
+mlb %>%
+  mutate(winLabel = as_factor(winLabel)) %>%
+  #filter(city.x %in% c('NewYork','LosAngeles')) %>%
+  mutate(winLabel = case_when(
+    winLabel == 0 ~ 'Slightly Less Competitive',
+    winLabel == 1 ~ 'More Competitive',
+    winLabel == 2 ~ 'Less Competitive',
+    winLabel == 3 ~ 'Least Competitive',
+    winLabel == 4 ~ 'Most Competitive',
+    winLabel == 5 ~ 'Slightly More Competitive'
+  )) %>%
+  ggplot(aes(x=popMil,y=Attendance,color=as_factor(winLabel))) +
+  geom_point()+
+  labs(
+    title = 'Attendance vs Population 2006-2023',
+    x = 'Population (millions)',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme(legend.position = 'none')+
+  facet_grid(~factor(winLabel,levels=c('Least Competitive','Less Competitive','Slightly Less Competitive','Slightly More Competitive','More Competitive','Most Competitive')))
+```
+```{r}
+slimStats %>%
+  mutate(popLabel = as_factor(popLabel)) %>%
+  #filter(city.x %in% c('NewYork','LosAngeles')) %>%
+  ggplot(aes(x=W,y=Attendance,color=as_factor(winLabel))) +
+  geom_point()+
+  labs(
+    title = 'Attendance vs Population 2006-2023',
+    x = 'Population',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  #theme(legend = element_blank())+
+  theme_bw()
+```
+```{r}
+slimStats %>%
+  ggplot(aes(x=winLabel,y=Attendance)) +
+  geom_boxplot(aes(color=winLabel))+
+  labs(
+    title = 'Attendance vs Competitiveness 2006-2023',
+    x = 'Competitiveness',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme(legend.position = 'none',
+        axis.text = element_text(size=11),
+        axis.title = element_text(size=13))+
+  theme(plot.title = element_text(size=24),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 13),
+        legend.title = element_text(size = 16),
+        axis.text = element_text(size=13))
+ggsave('clustered_boxplot.png',width=12,height=8,units="in")
+```
+
+```{r}
+slimStats %>%
+  ggplot(aes(x=winLabel,y=Attendance)) +
+  geom_boxplot(aes(color=winLabel))+
+  geom_point(data = subset(slimStats,Team == 'Atlanta Braves'),aes(x=winLabel,y=Attendance),color='#CE1141',size=2.5,alpha=0.7)+
+  labs(
+    title = 'Attendance vs Competitiveness with Atlanta Braves 2006-2023',
+    x = 'Competitiveness',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme(legend.position = 'none',
+        axis.text = element_text(size=11),
+        axis.title = element_text(size=13))+
+  theme(plot.title = element_text(size=24),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 13),
+        legend.title = element_text(size = 16),
+        axis.text = element_text(size=13))
+ggsave('braves_boxplot.png',width=12,height=8,units="in")
+```
+
+
+
+```{r}
+slimStats %>%
+  ggplot(aes(x=winLabel,y=Attendance)) +
+  geom_boxplot(aes(color=winLabel))+
+  geom_point(data = subset(slimStats,Team == 'Seattle Mariners'),aes(x=winLabel,y=Attendance),color='#005C5C',size=2.5,alpha=0.7)+
+  labs(
+    title = 'Attendance vs Competitiveness with Seattle Mariners 2006-2023',
+    x = 'Competitiveness',
+    y = 'Attendance'
+  )+
+  scale_y_continuous(labels= scales::comma)+
+  theme(legend.position = 'none',
+        axis.text = element_text(size=11),
+        axis.title = element_text(size=13))+
+  theme(plot.title = element_text(size=24),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 13),
+        legend.title = element_text(size = 16),
+        axis.text = element_text(size=13))
+ggsave('mariners_boxplot.png',width=12,height=8,units="in")
+```
